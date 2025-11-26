@@ -26,12 +26,13 @@ jobs:
         uses: actions/cache@v4
         with:
           key: func-cli-knative-v1.19.1
-          path: func
+          path: ~/.local/bin/func
       - name: Install func cli
         if: ${{ steps.func-cli-cache.outputs.cache-hit != 'true' }}
         uses: gauron99/knative-func-action@main
         with:
           name: func
           version: knative-v1.19.1
+          destination: ~/.local/bin/
       - name: Deploy function
         run: func deploy --registry=${{ vars.NAMESPACED_REGISTRY_URL }} -v
