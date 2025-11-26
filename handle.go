@@ -20,7 +20,7 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	msg := "Hello Knative Func! Modified!"
+	msg := "Hello Knative Func!"
 	fmt.Println("Received request")
 	fmt.Println(msg)
 	fmt.Printf("%q\n", dump)
