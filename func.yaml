@@ -1,0 +1,6 @@
+# $schema: https://raw.githubusercontent.com/knative/func/release-1.20/schema/func_yaml-schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/knative/func/release-1.20/schema/func_yaml-schema.json
+specVersion: 0.36.0
+name: issue-744-go-func-from-built-binary
+runtime: go
+created: 2025-11-17T16:46:49.187976984+01:00

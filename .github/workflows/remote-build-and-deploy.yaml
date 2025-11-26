@@ -1,0 +1,37 @@
+name: Remote Build and Deploy
+"on":
+  push:
+    branches:
+      - main
+  workflow_dispatch: {}
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Kubernetes context
+        uses: azure/k8s-set-context@v4
+        with:
+          kubeconfig: ${{ secrets.KUBECONFIG }}
+          method: kubeconfig
+      - name: Login to container registry
+        uses: docker/login-action@v3
+        with:
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+          registry: ${{ secrets.REGISTRY_URL }}
+          username: ${{ secrets.REGISTRY_USERNAME }}
+      - name: Restore func cli from cache
+        id: func-cli-cache
+        uses: actions/cache@v4
+        with:
+          key: func-cli-knative-v1.19.1
+          path: func
+      - name: Install func cli
+        if: ${{ steps.func-cli-cache.outputs.cache-hit != 'true' }}
+        uses: gauron99/knative-func-action@main
+        with:
+          name: func
+          version: knative-v1.19.1
+      - name: Deploy function
+        run: func deploy --registry=${{ secrets.REGISTRY_URL }} -v
